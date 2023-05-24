@@ -1,9 +1,9 @@
-@Library('kubernetes-shared-library') _
+
 pipeline {
     agent any
     environment {
     DOCKERHUB_CREDENTIALS = credentials('Dockerhub')
-    KUBECONFIG = '/path/to/kubeconfig'
+  
     }
     stages{
         stage('Compile and Clean') {
@@ -38,7 +38,7 @@ pipeline {
         stage('Deploy to k8s'){
             steps{
                 script{
-                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: '$KUBECONFIG_ID')
+                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: 'Dockerhub')
                 }
             }
         }
