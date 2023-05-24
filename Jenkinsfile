@@ -18,6 +18,7 @@ pipeline {
         stage('Build docker image'){
             steps{
                 script{
+                   
                     sh 'docker build -t javatechie/devops-integration .'
                 }
             }
@@ -26,8 +27,9 @@ pipeline {
             steps{
                 script{
                   sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                 
-                   sh 'docker push javatechie/devops-integration'
+                  sh "docker tag javatechie/devops-integration hamzaemi/hamza_el:99"
+
+                   sh 'docker push hamzaemi/hamza_el:99'
                 }
             }
         }
