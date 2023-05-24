@@ -1,9 +1,15 @@
 pipeline {
     agent any
-    tools{
-        maven 'maven_3_5_0'
+    environment {
+    DOCKERHUB_CREDENTIALS = credentials('Dockerhub')
     }
     stages{
+        stage('Compile and Clean') {
+            steps {
+
+                sh "mvn clean compile"
+            }
+        }
         stage('Build Maven'){
             steps{
                 sh 'mvn clean install'
@@ -19,10 +25,10 @@ pipeline {
         stage('Push image to Hub'){
             steps{
                 script{
-                   withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                  sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                    sh 'docker login -u javatechie -p ${dockerhubpwd}'
 
-}
+
                    sh 'docker push javatechie/devops-integration'
                 }
             }
