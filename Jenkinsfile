@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
     DOCKERHUB_CREDENTIALS = credentials('Dockerhub')
+    KUBECONFIG = '/path/to/kubeconfig'
     }
     stages{
         stage('Compile and Clean') {
@@ -36,7 +37,7 @@ pipeline {
         stage('Deploy to k8s'){
             steps{
                 script{
-                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: 'k8sconfigpwd')
+                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfig: env.KUBECONFIG)
                 }
             }
         }
