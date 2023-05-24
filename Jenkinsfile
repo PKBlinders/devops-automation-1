@@ -1,3 +1,4 @@
+@Library('kubernetes-shared-library') _
 pipeline {
     agent any
     environment {
@@ -37,7 +38,7 @@ pipeline {
         stage('Deploy to k8s'){
             steps{
                 script{
-                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfig: env.KUBECONFIG)
+                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: '$KUBECONFIG_ID')
                 }
             }
         }
